@@ -28,7 +28,7 @@ const sketch = function(p) {
     model.initialize().then(() => {
       model_loaded = true;
       // initialize the scale factor for the model. Bigger -> large outputs
-      //model.setPixelFactor(5.0);
+      model.setPixelFactor(4.0);
       restart();
       console.log(`${availableModels[randomIndex]} loaded!`)
     });
@@ -64,9 +64,9 @@ const sketch = function(p) {
   p.setup = function() {
     screen_width = p.windowWidth; //window.innerWidth
     screen_height = p.windowHeight; //window.innerHeight
-    x = screen_width/2.0;
+    x = screen_width/4.0;
     y = screen_height/4.0;
-    p.createCanvas(screen_width, screen_height / 2);
+    p.createCanvas(screen_width / 2 , screen_height * 0.5);
     p.frameRate(60);
     randomModel();
     restart();
@@ -91,7 +91,7 @@ const sketch = function(p) {
       // zero out the rnn's initial states
       rnn_state = model.zeroState();
 
-      x = screen_width/2.0;
+      x = screen_width/4.0;
       y = screen_height/4.0;
       line_color = p.color(p.random(64, 224), p.random(64, 224), p.random(64, 224));
       modelisActive = false;
