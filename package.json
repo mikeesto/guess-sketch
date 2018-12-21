@@ -1,14 +1,14 @@
 {
   "name": "guess-sketch",
   "version": "1.0.0",
-  "description": "",
+  "description": "A matching game powered by Magenta's sketch-rnn model",
   "main": "script.js",
   "scripts": {
     "start": "browser-sync start --server --files \"*.css, *.html, *.js\""
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Michael Esteban",
+  "license": "Apache-2.0",
   "dependencies": {
     "browser-sync": "^2.26.3"
   }

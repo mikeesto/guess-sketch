@@ -10,11 +10,14 @@ const sketch = function(p) {
   let line_color;
   let model_loaded = false;
   let screen_width, screen_height;
+  let answer;
 
-  const MODEL_LIST = ['bird', 'ant','ambulance','angel','alarm_clock','backpack','barn','basket','bear','bee','bicycle','book','brain','bridge','bulldozer','bus','butterfly','cactus','calendar','castle','cat','chair','couch','crab','cruise_ship','diving_board','dog','dolphin','duck','elephant','eye','face','fan','fire_hydrant','firetruck','flamingo','flower','frog','garden','hand','hedgeberry','hedgehog','helicopter','kangaroo','key','lantern','lighthouse','lion','lobster','map','mermaid','monkey','mosquito','octopus','owl','paintbrush','palm_tree','parrot','passport','peas','penguin','pig','pineapple','pool','postcard','rabbit','radio','rain','rhinoceros','rifle','roller_coaster','sandwich','scorpion','sea_turtle','sheep','skull','snail','snowflake','speedboat','spider','squirrel','steak','stove','strawberry','swan','swing_set','the_mona_lisa','tiger','toothbrush','toothpaste','tractor','trombone','truck','whale','windmill','yoga'];
+  const MODEL_LIST = ['bird', 'ant','ambulance','angel','alarm_clock','backpack','barn','basket','bear','bee','bicycle','book','brain','bridge','bulldozer','bus','butterfly','cactus','calendar','castle','cat','chair','couch','crab','cruise_ship','diving_board','dog','dolphin','duck','elephant','eye','face','fan','fire_hydrant','firetruck','flamingo','flower','frog','garden','hand','hedgehog','helicopter','kangaroo','key','lantern','lighthouse','lion','lobster','map','mermaid','monkey','mosquito','octopus','owl','paintbrush','palm_tree','parrot','passport','peas','penguin','pig','pineapple','pool','postcard','rabbit','radio','rain','rhinoceros','rifle','roller_coaster','sandwich','scorpion','sea_turtle','sheep','skull','snail','snowflake','speedboat','spider','squirrel','steak','stove','strawberry','swan','swing_set','the_mona_lisa','tiger','toothbrush','toothpaste','tractor','trombone','truck','whale','windmill','yoga'];
   const BASE_URL = 'https://storage.googleapis.com/quickdraw-models/sketchRNN/models/';
   
   const random_model = function () {
+    const loading = document.querySelector('.loading');
+    loading.style.visibility = 'visible';
     model_loaded = false;
 
     if (model) {
@@ -29,8 +32,39 @@ const sketch = function(p) {
       model.setPixelFactor(4.0); // initialize the scale factor for the model
       model_loaded = true;
       restart();
-      console.log(`${MODEL_LIST[random_index]} loaded!`);
+      //console.log(`${MODEL_LIST[random_index]} loaded!`);
+      answer = MODEL_LIST[random_index];
+      load_options();
+      loading.style.visibility = 'hidden';
     });
+  };
+
+  const load_options = function() {
+    let options = new Set(); // sets don't have duplicates :>
+    options.add(answer.replace(/_/g, ' '));
+
+    while (options.size < 6) {
+      const random_index = Math.floor(Math.random() * MODEL_LIST.length);
+      const value = (MODEL_LIST[random_index]).replace(/_/g, ' ');
+      options.add(value);
+    }
+
+    const buttons = document.querySelectorAll('.btn');
+    shuffle_array([...options]).forEach((value, i) => {
+      buttons[i].innerHTML = value;
+    })
+  };
+
+  // thanks to the Fisher-Yates shuffle algorithm
+  const shuffle_array = function(a) {
+    let j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+    }
+    return a;
   };
 
   const clear_screen = function() {
@@ -58,7 +92,7 @@ const sketch = function(p) {
     screen_height = p.windowHeight; // window.innerHeight
     x = screen_width/4.0;
     y = screen_height/4.0;
-    p.createCanvas(screen_width / 2 , screen_height * 0.5);
+    p.createCanvas(screen_width / 2 , screen_height * 0.6);
     p.frameRate(60);
     random_model();
     restart();
@@ -74,7 +108,7 @@ const sketch = function(p) {
 
     // see if we have finished drawing
     if (prev_pen[2] == 1) {
-      //initialize pen's states to zero.
+      // initialize pen's states to zero.
       [dx, dy, pen_down, pen_up, pen_end] = model.zeroInput(); // the pen's states
 
       // zero out the rnn's initial states
@@ -109,11 +143,35 @@ const sketch = function(p) {
     // update the previous pen's state to the current one we just sampled
     prev_pen = [pen_down, pen_up, pen_end];
   };
+
+  p.check_answer = function(guess) {
+    return (guess === answer.replace(/_/g, ' '));
+  };
+
+  p.get_answer = function() {
+    return answer.replace(/_/g, '');
+  }
 };
 
-document.querySelector('#draw-btn').addEventListener('click', () => {
-  console.log('clicked!');
-  p5Sketch.next();
+const buttons = document.querySelectorAll('.btn');
+const answer = document.querySelector('.answer');
+
+buttons.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    const target = event.target;
+    if (p5Sketch.check_answer(target.innerHTML)) {
+      target.classList.add('correct');
+    } else {
+      target.classList.add('incorrect');
+      answer.innerHTML = `<h3>Answer was <span style="color: green">${p5Sketch.get_answer()}</span></h3>`;
+    }
+
+    setTimeout(() => {
+      target.classList.remove('correct', 'incorrect');
+      answer.innerHTML = '';
+      p5Sketch.next();
+    }, 2000);
+  });
 });
 
 const p5Sketch = new p5(sketch, 'sketch');

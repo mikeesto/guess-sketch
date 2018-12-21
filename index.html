@@ -1,51 +1,46 @@
-<html>
-<head>
-  <title>Guess the Sketch</title>
-  <link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
-	<style>
-    h1
-    {
-      text-align: center;
-    }
-    head {
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: "Roboto", "sans serif";
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    #sketch {
-      flex: 1;
-    }
-
-    #questions {
-      margin-top: 20px;
-      border-top: 1px solid black;
-      padding-top: 10px;
-      min-width: 70%;
-    }
-  </style>
-</head>
-<body>
-  <button id="draw-btn">Draw</button>
-  <h1>Guess the Sketch!</h1>
-  <div class="container">
-    <div id="sketch"></div>
-    <div id="questions">
-      <h1>Stuff</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Guess the Sketch</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <h1>// guess the sketch</h1>
+    <h4>Powered by <a target="_blank" href="https://magenta.tensorflow.org/">magenta.js</a> & <a target="_blank" href="https://magenta.tensorflow.org/sketch-rnn-demo">sketch-rnn</a></h4>
+    <h4>Peek the <a target="_blank" href="https://glitch.com/edit/#!/guess-the-sketch">code</a></h4>
+    <h4><a class="none" target="_blank" href="https://github.com/MichaelE1/guess-sketch">@MichaelE1</a></h4>
+    <div class="container">
+      <div id="sketch"></div>
+      <h3 class="loading">Loading...</h3>
+      <div class="btns-container">
+        <div class="btn">
+          <h3>1</h3>
+        </div>
+        <div class="btn">
+          <h3>2</h3>
+        </div>
+        <div class="btn">
+          <h3>3</h3>
+        </div>
+        <div class="btn">
+          <h3>4</h3>
+        </div>
+        <div class="btn">
+          <h3>5</h3>
+        </div>
+        <div class="btn">
+          <h3>6</h3>
+        </div>
+      </div>
+      <div class="answer">
+      </div>
     </div>
-  </div>
-</body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@magenta/sketch@0.1.3/dist/magentasketch.min.js"></script>
-<script src="script.js"></script>
+  </body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@magenta/sketch@0.1.3/dist/magentasketch.min.js"></script>
+  <script src="script.js"></script>
 </html>
